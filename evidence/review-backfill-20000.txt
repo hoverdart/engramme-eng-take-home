@@ -1,0 +1,12 @@
+20,000-item backfill + 20 live events; seed 20261112
+
+PASS  backfill-20000
+      live events recallable, p95: 0.29s
+      converged after backfill: 122.4s
+      duration: 133.8s
+      events sent: 20020
+      sidecar extract completed: 20020
+      sidecar consolidate completed: 13
+      sidecar rate limited: 0
+      sidecar transient failures: 421
+      sidecar invalid requests: 0

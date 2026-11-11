@@ -49,7 +49,7 @@ Atomic IDs are deterministic hashes of user and fact key, so an unchanged fact k
 
 An accepted event and its required derivation job commit in one SQLite transaction before the response is sent. A 2xx therefore means durable acceptance, not that extraction has already finished. Duplicate and older versions are acknowledged without changing state. Upstream deletes advance the version just like upserts.
 
-Derivation calls happen outside the database lock. Their results commit only if the durable task still has the same generation. A newer edit replaces the extraction generation; a user delete or disconnect cancels the task. Old calls cannot recreate a forgotten item. Summary generation changes reject a result calculated from an obsolete fact set. Deterministic sidecar calls can safely be repeated after a lost response or process crash.
+Derivation calls happen outside the database lock. Their results and failures apply only if the durable task still has the same generation and creation time. A newer edit replaces the extraction generation; a user delete or disconnect cancels the task. Reconnect creates a fresh task even when the upstream version is unchanged, so a pre-disconnect call cannot complete or block its replacement. Old calls cannot recreate a forgotten item. Summary generation changes reject a result calculated from an obsolete fact set. Deterministic sidecar calls can safely be repeated after a lost response or process crash.
 
 ### Scheduling and summaries
 
@@ -88,13 +88,13 @@ The SQL transaction contains both the logical write and durable work. If a proce
 
 Run the public scenarios and record their exact output rather than inferring hidden-test success. `all` includes actual application-container SIGKILL/restart tests. The scripted demo checks live HTTP behavior for shared lineage, edit IDs, summary updates, immediate clean reads, and reconnect tombstones. The statistics script checks its closed-form values against independent numerical CDF bisection.
 
-The eight public scenarios passed with seed `20261111`: basic, dupes, reorder, cross-source, edit, backfill, delete, and crash. The recorded backfill live-visibility p95 was 0.27 seconds; deletion checks ran 5,600 read probes; the crash test performed four SIGKILLs. The run recorded zero rate-limit errors. See [the full harness output](evidence/harness-20261111.txt).
+The reviewed service passed all eight public scenarios with seed `20261110`: basic, dupes, reorder, cross-source, edit, backfill, delete, and crash. Backfill live-visibility p95 was 0.28 seconds; deletion checks ran 4,931 read probes; the crash test performed four SIGKILLs. The run recorded zero rate-limit errors. See [the full harness output](evidence/review-harness.txt).
 
-The final source also passed all eight scenarios with seed `20261112`, plus 20 focused service tests, 11 starter-kit tests, the TypeScript client check, and the interactive HTTP demo. See [VERIFICATION.md](VERIFICATION.md) for commands, scope, and raw evidence.
+The 26 service and HTTP tests pass, including 8,000 seeded operations mixing edits, deletes, reconnects, delayed results, and database restarts. The original implementation also passed the public scenarios with seeds `20261111` and `20261112`. See [VERIFICATION.md](VERIFICATION.md) for commands, scope, and raw evidence.
 
-The full **20,000-item backfill** passed against the reference model: live recall p95 **0.29 seconds**, convergence **123.4 seconds** after sending stopped, and zero rate-limit errors. This is within the scenario's 210.2-second convergence budget.
+The full **20,000-item backfill** passed against the reference model: live recall p95 **0.29 seconds**, convergence **122.4 seconds** after sending stopped, and zero rate-limit errors. This is within the scenario's 210.2-second convergence budget. See [the reviewed run](evidence/review-backfill-20000.txt).
 
-An isolated **200,000-item / 500-user** storage-loaded benchmark measured **559.399 accepted events/s** and **62.639 ms recall p95**, with 24 writers and 8 readers. It starts from a prepared fixture, then makes 5,000 real HTTP updates and waits for real sidecar derivations to converge. It is not a claim that 200,000 events were replayed end-to-end, and hidden tests have not been run.
+An isolated **200,000-item / 500-user** storage-loaded benchmark measured **508.245 accepted events/s** and **75.377 ms recall p95**, with 24 writers and 8 readers. It starts from a prepared fixture, then makes 5,000 real HTTP updates, waits for real sidecar derivations to converge, and verifies the final text and lineage for all 500 users against the reference model. It is not a claim that 200,000 events were replayed end-to-end, and hidden tests have not been run.
 
 ```sh
 python3 -m unittest discover -s tests -v

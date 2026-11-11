@@ -15,6 +15,7 @@ import tempfile
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import ExitStack
 from pathlib import Path
 from urllib.parse import quote
 from urllib.request import Request, urlopen
@@ -22,6 +23,8 @@ from urllib.request import Request, urlopen
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from service.app import Handler, Server, Store, identifier
 from memkit import core
+from harness_lib.checks import compare_user
+from harness_lib.reference import expected_state
 
 
 def requestJson(method, path, body=None):
@@ -68,14 +71,18 @@ def seedFixture(databasePath):
 
 def main():
     print('Seeding isolated 200,000-item / 500-user / 200,000-atomic fixture...', flush=True)
-    with tempfile.TemporaryDirectory(prefix='engramme-benchmark-') as directory:
+    with tempfile.TemporaryDirectory(prefix='engramme-benchmark-') as directory, ExitStack() as cleanup:
         databasePath = str(Path(directory) / 'memory.sqlite3')
         facts = seedFixture(databasePath)
         store = Store(databasePath)
+        cleanup.callback(store.close)
         server = Server(('127.0.0.1', 18080), Handler)
+        cleanup.callback(server.server_close)
         server.store = store
         serverThread = threading.Thread(target=server.serve_forever, daemon=True)
         serverThread.start()
+        cleanup.callback(serverThread.join)
+        cleanup.callback(server.shutdown)
         stopProbes = threading.Event()
         recallLatencies, writeLatencies, errors = [], [], []
         listLock = threading.Lock()
@@ -140,11 +147,21 @@ def main():
             counts = {table: store.db.execute(f'SELECT count(*) FROM {table}').fetchone()[0]
                       for table in ('items', 'atomics', 'supports', 'summaries')}
         print(f'Converged counts: {counts}; pending tasks: {pending}')
-        server.shutdown()
-        server.server_close()
-        serverThread.join()
-        store.close()
-        passed = (rate >= 200 and recallP95 < 150 and not errors and not pending
+        # Counts alone can pass with incorrect text or support edges. The edits
+        # retain each item's facts, so every user must return this exact state.
+        expected = expected_state({('fixture', 'mail', f'item-{i}'): fact.text
+                                   for i, fact in enumerate(facts)})
+        correctnessProblems = []
+        for userIndex in range(500):
+            userId = f'bench-{userIndex}'
+            actual = requestJson('GET', f'/v1/users/{userId}/memories?limit=500')
+            correctnessProblems.extend(compare_user(userId, expected, actual['memories']))
+            if actual['next_cursor'] is not None:
+                correctnessProblems.append(f'{userId}: unexpected extra memory page')
+        print(f'Final reference checks: 500 users; problems: {len(correctnessProblems)}')
+        for problem in correctnessProblems[:10]:
+            print(problem)
+        passed = (rate >= 200 and recallP95 < 150 and not errors and not pending and not correctnessProblems
                   and counts == dict(items=200000, atomics=200000, supports=200000, summaries=500))
         print('PASS storage-loaded benchmark' if passed else 'FAIL storage-loaded benchmark')
         return 0 if passed else 1

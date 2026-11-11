@@ -1,0 +1,106 @@
+seed 20261110, redelete_policy permanent
+
+running basic ...
+
+PASS  basic
+      converged after ingest: 1.0s
+      duration: 1.1s
+      events sent: 45
+      sidecar extract completed: 45
+      sidecar consolidate completed: 9
+      sidecar rate limited: 0
+      sidecar transient failures: 0
+      sidecar invalid requests: 0
+
+running dupes ...
+
+PASS  dupes
+      converged after duplicate deliveries: 3.1s
+      duration: 3.5s
+      events sent: 948
+      sidecar extract completed: 320
+      sidecar consolidate completed: 47
+      sidecar rate limited: 0
+      sidecar transient failures: 8
+      sidecar invalid requests: 0
+
+running reorder ...
+
+PASS  reorder
+      converged after out-of-order versions: 2.1s
+      duration: 2.4s
+      events sent: 817
+      sidecar extract completed: 176
+      sidecar consolidate completed: 30
+      sidecar rate limited: 0
+      sidecar transient failures: 3
+      sidecar invalid requests: 0
+
+running cross-source ...
+
+PASS  cross-source
+      facts stated in several sources: 72
+      converged after cross-source ingest: 2.0s
+      duration: 2.2s
+      events sent: 240
+      sidecar extract completed: 240
+      sidecar consolidate completed: 21
+      sidecar rate limited: 0
+      sidecar transient failures: 4
+      sidecar invalid requests: 0
+
+running edit ...
+
+PASS  edit
+      converged after first versions: 2.0s
+      converged after edits: 2.1s
+      duration: 4.3s
+      events sent: 290
+      sidecar extract completed: 273
+      sidecar consolidate completed: 46
+      sidecar rate limited: 0
+      sidecar transient failures: 5
+      sidecar invalid requests: 0
+
+running backfill ...
+
+PASS  backfill
+      live events recallable, p95: 0.28s
+      converged after backfill: 9.5s
+      duration: 20.7s
+      events sent: 3020
+      sidecar extract completed: 3020
+      sidecar consolidate completed: 11
+      sidecar rate limited: 0
+      sidecar transient failures: 68
+      sidecar invalid requests: 0
+
+running delete ...
+
+PASS  delete
+      converged after ingest: 2.0s
+      read probes during deletes: 4931
+      converged after deletes and disconnects: 0.0s
+      converged after reconnect and backfill: 1.0s
+      duration: 5.3s
+      events sent: 265
+      sidecar extract completed: 257
+      sidecar consolidate completed: 25
+      sidecar rate limited: 0
+      sidecar transient failures: 10
+      sidecar invalid requests: 0
+
+running crash ...
+
+PASS  crash
+      kills: 4
+      converged after crashes: 0.0s
+      duration: 18.2s
+      events sent: 542
+      sidecar extract completed: 207
+      sidecar consolidate completed: 24
+      sidecar rate limited: 0
+      sidecar transient failures: 2
+      sidecar invalid requests: 0
+
+8/8 scenarios passed (seed 20261110)

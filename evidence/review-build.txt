@@ -1,0 +1,91 @@
+ Image engramme-eng-take-home-memkit Building
+ Image engramme-eng-take-home-app Building
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.10kB done
+#1 DONE 0.0s
+
+#2 [memkit internal] load build definition from Dockerfile
+#2 transferring dockerfile: 186B done
+#2 DONE 0.0s
+
+#3 [app internal] load build definition from Dockerfile
+#3 transferring dockerfile: 280B done
+#3 DONE 0.0s
+
+#4 [app internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.3s
+
+#5 [memkit internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [app internal] load .dockerignore
+#6 transferring context: 83B done
+#6 DONE 0.0s
+
+#7 [memkit internal] load build context
+#7 transferring context: 457B done
+#7 DONE 0.0s
+
+#8 [app internal] load build context
+#8 transferring context: 26.67kB done
+#8 DONE 0.0s
+
+#9 [app 1/4] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#9 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.0s done
+#9 DONE 0.0s
+
+#10 [app 2/4] WORKDIR /app
+#10 CACHED
+
+#11 [memkit 2/3] WORKDIR /kit
+#11 CACHED
+
+#12 [app 3/4] COPY starter-kit/memkit /app/starter-kit/memkit
+#12 CACHED
+
+#13 [memkit 3/3] COPY memkit ./memkit
+#13 CACHED
+
+#14 [app 4/4] COPY service /app/service
+#14 DONE 0.0s
+
+#15 [memkit] exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:9b89be14fefd70045b02cc436d9eb2818e616abb1379dc261a599447edb7d01a done
+#15 exporting config sha256:8b38f20b6631b74de9903023b943b9fa00979e1dced6ac8e9e15e2f10e397e95 done
+#15 exporting attestation manifest sha256:965e86283fa7f3bab2afb2e35a759ab25299108b0b9f44999622681f6747d458 done
+#15 exporting manifest list sha256:8bfa3f41fadf51ce4dafdcc8fa9069675be2f11415eb816d13d9489b27be701f done
+#15 naming to docker.io/library/engramme-eng-take-home-memkit:latest done
+#15 unpacking to docker.io/library/engramme-eng-take-home-memkit:latest done
+#15 DONE 0.0s
+
+#16 [app] exporting to image
+#16 exporting layers 0.0s done
+#16 exporting manifest sha256:f25eb3628ce464ee8c982ec93028490ea8876bd233a1e3e9c63a01fb8f8ee3f7 0.0s done
+#16 exporting config sha256:454a604ee69df96b9f0c96d36b583bdf7c75f25a2de80582e68728678bba4468 done
+#16 exporting attestation manifest sha256:526c7f5c935aab881fdd4d7127f4c5e0f06e0553bf8f181e4159af8231a482e2 0.0s done
+#16 exporting manifest list sha256:4253825683911c3ca21a9cb6a8d6f04031baed29e72fada1f1dbd9f3d50b76e2
+#16 exporting manifest list sha256:4253825683911c3ca21a9cb6a8d6f04031baed29e72fada1f1dbd9f3d50b76e2 done
+#16 naming to docker.io/library/engramme-eng-take-home-app:latest done
+#16 unpacking to docker.io/library/engramme-eng-take-home-app:latest 0.0s done
+#16 DONE 0.1s
+
+#17 [memkit] resolving provenance for metadata file
+#17 DONE 0.0s
+
+#18 [app] resolving provenance for metadata file
+#18 DONE 0.0s
+ Image engramme-eng-take-home-memkit Built
+ Image engramme-eng-take-home-app Built
+ Container engramme-eng-take-home-memkit-1 Running
+ Container engramme-eng-take-home-app-1 Recreate
+ Container engramme-eng-take-home-app-1 Recreated
+ Container engramme-eng-take-home-memkit-1 Waiting
+ Container engramme-eng-take-home-memkit-1 Healthy
+ Container engramme-eng-take-home-app-1 Starting
+ Container engramme-eng-take-home-app-1 Started
+ Container engramme-eng-take-home-app-1 Waiting
+ Container engramme-eng-take-home-memkit-1 Waiting
+ Container engramme-eng-take-home-memkit-1 Healthy
+ Container engramme-eng-take-home-app-1 Healthy

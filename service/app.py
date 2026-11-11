@@ -292,7 +292,11 @@ class Store:
 
     def currentTask(self, task):
         current = self.db.execute("SELECT * FROM tasks WHERE key=?", (task["key"],)).fetchone()
-        return current if current and current["generation"] == task["generation"] else None
+        # Reconnect can create a new job for the SAME upstream item version.
+        # Its creation time distinguishes that lifetime from a cancelled call
+        # still in flight; neither its result nor its failure owns the new job.
+        return current if (current and current["generation"] == task["generation"]
+                           and current["created"] == task["created"]) else None
 
     def prepare(self, task):
         with self.lock:

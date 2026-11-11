@@ -3,6 +3,7 @@
 Run from repository root: python3 -m unittest discover -s tests -v
 FakeClient is test-only. Production always calls the supplied sidecar.
 """
+import random
 import tempfile
 import threading
 import time
@@ -12,6 +13,9 @@ from pathlib import Path
 
 from service.app import Scheduler, Store, taskKey
 from memkit import core
+from harness_lib.checks import compare_user
+from harness_lib.reference import Reference
+from harness_lib.workload import Event
 
 
 class FakeClient:
@@ -151,6 +155,34 @@ class StoreTests(unittest.TestCase):
         self.drain()
         self.assertEqual([m["text"] for m in self.atomics()], FACTS[1:2])
 
+    def test_reconnect_replacement_is_not_completed_by_pre_disconnect_call(self):
+        self.event()
+        old = self.tasks("extract")[0]
+        result = FakeClient.extract(self.store.prepare(old))
+        self.store.source("u", "mail", 0)
+        self.store.source("u", "mail", 1)
+        replacement = self.tasks("extract")[0]
+        self.assertEqual(old["generation"], replacement["generation"])
+        self.assertNotEqual(old["created"], replacement["created"])
+        self.assertIsNone(self.store.prepare(old))
+        self.assertFalse(self.store.complete(old, result))
+        self.assertEqual(self.tasks("extract"), [replacement])
+        self.assertEqual(self.memories(), [])
+        self.drain()
+        self.assertEqual([m["text"] for m in self.atomics()], FACTS[:1])
+
+    def test_pre_disconnect_failure_cannot_block_reconnected_job(self):
+        self.event()
+        old = self.tasks("extract")[0]
+        self.store.source("u", "mail", 0)
+        self.store.source("u", "mail", 1)
+        replacement = self.tasks("extract")[0]
+        self.store.retry(old, RuntimeError("old connection failed"), permanent=True)
+        self.assertTrue(self.store.healthy())
+        self.assertEqual(self.tasks("extract"), [replacement])
+        self.drain()
+        self.assertEqual([m["text"] for m in self.atomics()], FACTS[:1])
+
     def test_summary_removed_synchronously_when_fact_disappears(self):
         for index, fact in enumerate(FACTS):
             self.event(str(index), [fact])
@@ -251,6 +283,61 @@ class StoreTests(unittest.TestCase):
         self.store.forget("u", "mail", "one")
         self.assertEqual(self.memories("u"), [])
         self.assertEqual(len(self.memories("other")), 1)
+
+
+    def test_mixed_interleavings_and_restarts_match_reference(self):
+        # Delay model responses across edits/deletes and warm read caches before
+        # writes. Restarts discard in-flight responses but retain durable jobs.
+        # The independent supplied reference defines the final expected state.
+        for seed in range(20):
+            with self.subTest(seed=seed):
+                self.store.close()
+                path = str(Path(self.directory.name) / f"mixed-{seed}.db")
+                self.store = Store(path, client=FakeClient(), workers=0)
+                reference = Reference("permanent")
+                rng = random.Random(seed)
+                inFlight = []
+                for _ in range(400):
+                    uid = rng.choice(["u", "other"])
+                    sid = rng.choice(["mail", "calendar"])
+                    iid = str(rng.randrange(12))
+                    action = rng.randrange(11)
+                    if action < 5:
+                        event = Event(uid, sid, iid, rng.randrange(1, 10),
+                                      "delete" if action == 0 else "upsert",
+                                      " ".join(rng.sample(FACTS, rng.randrange(5))),
+                                      "2026-01-01T00:00:00Z")
+                        self.store.event(event.to_json())
+                        reference.apply_event(event)
+                    elif action == 5:
+                        self.store.forget(uid, sid, iid)
+                        reference.user_delete((uid, sid, iid))
+                    elif action == 6:
+                        connected = rng.randrange(2)
+                        self.store.source(uid, sid, connected)
+                        (reference.connect if connected else reference.disconnect)(uid, sid)
+                    elif action == 7:
+                        tasks = self.tasks()
+                        if tasks:
+                            task = rng.choice(tasks)
+                            data = self.store.prepare(task)
+                            if data is not None:
+                                result = (FakeClient.extract(data) if task["kind"] == "extract"
+                                          else FakeClient.consolidate(data))
+                                inFlight.append((task, result))
+                    elif action == 8 and inFlight:
+                        self.store.complete(*inFlight.pop(rng.randrange(len(inFlight))))
+                    elif action == 9:
+                        self.store.close()
+                        self.store = Store(path, client=FakeClient(), workers=0)
+                        inFlight.clear()
+                    else:
+                        self.memories(uid)
+                for task, result in inFlight:
+                    self.store.complete(task, result)
+                self.drain()
+                for uid in ("u", "other"):
+                    self.assertEqual(compare_user(uid, reference.user_state(uid), self.memories(uid)), [])
 
 
 class SchedulerTests(unittest.TestCase):

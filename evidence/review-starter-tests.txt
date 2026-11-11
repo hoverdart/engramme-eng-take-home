@@ -1,0 +1,32 @@
+test_consolidate_is_order_independent (test_memkit.CoreTest.test_consolidate_is_order_independent) ... ok
+test_consolidate_rejects_bad_input (test_memkit.CoreTest.test_consolidate_rejects_bad_input) ... ok
+test_embed_exact_text_scores_highest (test_memkit.CoreTest.test_embed_exact_text_scores_highest) ... ok
+test_embed_matches_fixture (test_memkit.CoreTest.test_embed_matches_fixture) ... ok
+test_extract_caps_and_dedupes (test_memkit.CoreTest.test_extract_caps_and_dedupes) ... ok
+test_extract_finds_facts_and_ignores_noise (test_memkit.CoreTest.test_extract_finds_facts_and_ignores_noise) ... ok
+test_same_fact_has_same_key_in_any_item (test_memkit.CoreTest.test_same_fact_has_same_key_in_any_item) ... ok
+test_concurrency_limit_returns_429 (test_memkit.SidecarTest.test_concurrency_limit_returns_429) ... /opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 429: 'Too Many Requests'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/case.py:673: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=1, proto=0, laddr=('0.0.0.0', 55664)>
+  self.doCleanups()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_extract_and_consolidate_round_trip (test_memkit.SidecarTest.test_extract_and_consolidate_round_trip) ... /opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/case.py:673: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=1, proto=0, laddr=('0.0.0.0', 55697)>
+  self.doCleanups()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_invalid_consolidate_is_not_retryable (test_memkit.SidecarTest.test_invalid_consolidate_is_not_retryable) ... /opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 400: 'Bad Request'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/case.py:673: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=1, proto=0, laddr=('0.0.0.0', 55707)>
+  self.doCleanups()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_transient_failures_are_retryable (test_memkit.SidecarTest.test_transient_failures_are_retryable) ... /opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/case.py:673: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=1, proto=0, laddr=('0.0.0.0', 55712)>
+  self.doCleanups()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.061s
+
+OK

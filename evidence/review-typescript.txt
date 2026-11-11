@@ -1,0 +1,2 @@
+embed matches Python for 6 texts
+sidecar round trip ok
