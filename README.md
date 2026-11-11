@@ -25,7 +25,7 @@ python3 calculate_statistics.py
 
 The service listens on `http://localhost:8080`, and the supplied sidecar on `http://localhost:7070`. Compose binds both ports to loopback. `docker compose up` also builds missing images, so a fresh checkout needs no separate installation step. Stop with `docker compose down`; the named `memory-data` volume is retained. Do not delete that volume if the stored data is needed.
 
-For an interactive recording, use `python3 scripts/demo.py --pause` and follow [DEMO.md](DEMO.md). The complete original brief is preserved in [ASSIGNMENT.md](ASSIGNMENT.md), and the wire protocol is in [starter-kit/API.md](starter-kit/API.md).
+For an interactive demonstration of the API behavior, use `python3 scripts/demo.py --pause`. The complete original brief is preserved in [ASSIGNMENT.md](ASSIGNMENT.md), and the wire protocol is in [starter-kit/API.md](starter-kit/API.md).
 
 ## Design
 
