@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "memkit"
+version = "1.0.0"
+description = "Sidecar, client and test harness for the memory service take-home"
+requires-python = ">=3.10"
+
+[project.scripts]
+memkit-sidecar = "memkit.sidecar:main"
+
+[tool.setuptools]
+packages = ["memkit", "harness_lib"]

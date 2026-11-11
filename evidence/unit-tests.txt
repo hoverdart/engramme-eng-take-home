@@ -1,0 +1,26 @@
+test_replaced_and_cancelled_jobs_are_not_dispatched (test_service.SchedulerTests.test_replaced_and_cancelled_jobs_are_not_dispatched) ... ok
+test_source_round_robin_does_not_queue_live_work_behind_bulk (test_service.SchedulerTests.test_source_round_robin_does_not_queue_live_work_behind_bulk) ... ok
+test_work_classes_all_get_service (test_service.SchedulerTests.test_work_classes_all_get_service) ... ok
+test_concurrent_versions_and_user_forget_are_serializable (test_service.StoreTests.test_concurrent_versions_and_user_forget_are_serializable) ... ok
+test_cross_source_dedup_and_clean_shared_lineage (test_service.StoreTests.test_cross_source_dedup_and_clean_shared_lineage) ... ok
+test_disconnect_cancels_inflight_extract_and_reconnect_restores (test_service.StoreTests.test_disconnect_cancels_inflight_extract_and_reconnect_restores) ... ok
+test_disconnect_cleans_cache_and_reconnect_excludes_forget (test_service.StoreTests.test_disconnect_cleans_cache_and_reconnect_excludes_forget) ... ok
+test_duplicate_and_reordered_events_keep_latest_version (test_service.StoreTests.test_duplicate_and_reordered_events_keep_latest_version) ... ok
+test_forget_unknown_item_survives_future_delivery (test_service.StoreTests.test_forget_unknown_item_survives_future_delivery) ... ok
+test_inflight_extract_cannot_resurrect_forgotten_item (test_service.StoreTests.test_inflight_extract_cannot_resurrect_forgotten_item) ... ok
+test_old_extract_cannot_commit_after_edit (test_service.StoreTests.test_old_extract_cannot_commit_after_edit) ... ok
+test_reopen_recovers_pending_acknowledged_write_and_tombstone (test_service.StoreTests.test_reopen_recovers_pending_acknowledged_write_and_tombstone) ... ok
+test_retry_schedule_is_durable (test_service.StoreTests.test_retry_schedule_is_durable) ... retry job ["extract","u","mail","one"]: transient test failure
+ok
+test_stale_summary_cannot_commit_after_forget (test_service.StoreTests.test_stale_summary_cannot_commit_after_forget) ... ok
+test_summary_lineage_updates_without_rebuilding_same_facts (test_service.StoreTests.test_summary_lineage_updates_without_rebuilding_same_facts) ... ok
+test_summary_removed_synchronously_when_fact_disappears (test_service.StoreTests.test_summary_removed_synchronously_when_fact_disappears) ... ok
+test_transaction_rollback_does_not_schedule_uncommitted_work (test_service.StoreTests.test_transaction_rollback_does_not_schedule_uncommitted_work) ... ok
+test_unchanged_facts_keep_ids_across_edit (test_service.StoreTests.test_unchanged_facts_keep_ids_across_edit) ... ok
+test_upstream_delete_version_prevents_old_replay (test_service.StoreTests.test_upstream_delete_version_prevents_old_replay) ... ok
+test_user_isolation_for_identical_facts_and_item_ids (test_service.StoreTests.test_user_isolation_for_identical_facts_and_item_ids) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.055s
+
+OK

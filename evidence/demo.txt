@@ -1,0 +1,195 @@
+Fresh demonstration user: demo-20d8464be7
+
+=== One shared fact, two source items, one summary ===
+{
+  "shared": {
+    "id": "mem_d4305da01a825d2130664b461fb8745b",
+    "kind": "atomic",
+    "fact_key": "4115c9fe907d8bdd",
+    "topic": "project:atlas",
+    "text": "Ana is leading the Atlas project.",
+    "lineage": {
+      "items": [
+        {
+          "source_id": "gcal",
+          "item_id": "shared-calendar"
+        },
+        {
+          "source_id": "gmail",
+          "item_id": "shared-email"
+        }
+      ],
+      "memories": []
+    }
+  },
+  "summary": {
+    "id": "mem_c0752d1b131179dcc5cf335a686301a8",
+    "kind": "summary",
+    "topic": "project:atlas",
+    "text": "Project Atlas: Ana is leading the Atlas project. Ben joined the Atlas project. The Atlas project budget is 120000 dollars. The Atlas project deadline is March 3.",
+    "lineage": {
+      "items": [
+        {
+          "source_id": "gcal",
+          "item_id": "member"
+        },
+        {
+          "source_id": "gcal",
+          "item_id": "shared-calendar"
+        },
+        {
+          "source_id": "gmail",
+          "item_id": "details"
+        },
+        {
+          "source_id": "gmail",
+          "item_id": "shared-email"
+        }
+      ],
+      "memories": [
+        "mem_475bfaef1dcded463be7cf05e83e5c4f",
+        "mem_80fd88ceb63ecff93a30bdf12562b0e5",
+        "mem_a8bdb47f2f03eb574bb7b3afa83a3e85",
+        "mem_d4305da01a825d2130664b461fb8745b"
+      ]
+    }
+  }
+}
+
+=== Edit updates the summary; unchanged fact IDs stay stable ===
+{
+  "budget_id_before": "mem_a8bdb47f2f03eb574bb7b3afa83a3e85",
+  "budget_id_after": "mem_a8bdb47f2f03eb574bb7b3afa83a3e85",
+  "summary": {
+    "id": "mem_c0752d1b131179dcc5cf335a686301a8",
+    "kind": "summary",
+    "topic": "project:atlas",
+    "text": "Project Atlas: Ana is leading the Atlas project. Ben joined the Atlas project. The Atlas project budget is 120000 dollars. The Atlas project deadline is April 4.",
+    "lineage": {
+      "items": [
+        {
+          "source_id": "gcal",
+          "item_id": "member"
+        },
+        {
+          "source_id": "gcal",
+          "item_id": "shared-calendar"
+        },
+        {
+          "source_id": "gmail",
+          "item_id": "details"
+        },
+        {
+          "source_id": "gmail",
+          "item_id": "shared-email"
+        }
+      ],
+      "memories": [
+        "mem_071371404688af4ba97feb6cf8fe8973",
+        "mem_80fd88ceb63ecff93a30bdf12562b0e5",
+        "mem_a8bdb47f2f03eb574bb7b3afa83a3e85",
+        "mem_d4305da01a825d2130664b461fb8745b"
+      ]
+    }
+  }
+}
+
+=== Forget the first source: the shared memory remains ===
+{
+  "id": "mem_d4305da01a825d2130664b461fb8745b",
+  "kind": "atomic",
+  "fact_key": "4115c9fe907d8bdd",
+  "topic": "project:atlas",
+  "text": "Ana is leading the Atlas project.",
+  "lineage": {
+    "items": [
+      {
+        "source_id": "gcal",
+        "item_id": "shared-calendar"
+      }
+    ],
+    "memories": []
+  }
+}
+
+=== Forget the last source: list, recall and direct lookup are immediately clean ===
+{
+  "deleted_memory_id": "mem_d4305da01a825d2130664b461fb8745b",
+  "live_memory_count": 3,
+  "checks": [
+    "list has no forgotten text",
+    "recall has no forgotten text",
+    "direct lookup returns 404"
+  ]
+}
+
+=== The remaining three facts get a fresh summary ===
+{
+  "id": "mem_c0752d1b131179dcc5cf335a686301a8",
+  "kind": "summary",
+  "topic": "project:atlas",
+  "text": "Project Atlas: Ben joined the Atlas project. The Atlas project budget is 120000 dollars. The Atlas project deadline is April 4.",
+  "lineage": {
+    "items": [
+      {
+        "source_id": "gcal",
+        "item_id": "member"
+      },
+      {
+        "source_id": "gmail",
+        "item_id": "details"
+      }
+    ],
+    "memories": [
+      "mem_071371404688af4ba97feb6cf8fe8973",
+      "mem_80fd88ceb63ecff93a30bdf12562b0e5",
+      "mem_a8bdb47f2f03eb574bb7b3afa83a3e85"
+    ]
+  }
+}
+
+=== Reconnect restores the live item, never the permanently forgotten one ===
+{
+  "restored_item": {
+    "id": "mem_80fd88ceb63ecff93a30bdf12562b0e5",
+    "kind": "atomic",
+    "fact_key": "e519ab3513d629d6",
+    "topic": "project:atlas",
+    "text": "Ben joined the Atlas project.",
+    "lineage": {
+      "items": [
+        {
+          "source_id": "gcal",
+          "item_id": "member"
+        }
+      ],
+      "memories": []
+    }
+  },
+  "forgotten_old_and_newer_versions_rejected": true,
+  "summary": {
+    "id": "mem_c0752d1b131179dcc5cf335a686301a8",
+    "kind": "summary",
+    "topic": "project:atlas",
+    "text": "Project Atlas: Ben joined the Atlas project. The Atlas project budget is 120000 dollars. The Atlas project deadline is April 4.",
+    "lineage": {
+      "items": [
+        {
+          "source_id": "gcal",
+          "item_id": "member"
+        },
+        {
+          "source_id": "gmail",
+          "item_id": "details"
+        }
+      ],
+      "memories": [
+        "mem_071371404688af4ba97feb6cf8fe8973",
+        "mem_80fd88ceb63ecff93a30bdf12562b0e5",
+        "mem_a8bdb47f2f03eb574bb7b3afa83a3e85"
+      ]
+    }
+  }
+}
+
+PASS: all HTTP demo assertions passed. Next: backfill and crash harness chapters.
