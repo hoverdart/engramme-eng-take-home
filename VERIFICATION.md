@@ -49,4 +49,15 @@ This is a **storage-loaded benchmark**, not a 200,000-event end-to-end replay or
 
 Earlier public runs on the original implementation also passed with seeds [20261111](evidence/harness-20261111.txt) and [20261112](evidence/harness-final-20261112.txt). Their raw evidence is retained separately from the reviewed runs above.
 
+## Recorded demonstration
+
+The video linked at the top of the README combines the candidate's recorded narration with actual local application captures. Its backfill waiting interval is visibly accelerated. The captured runs passed:
+
+- HTTP remembering, editing, shared lineage, immediate clean reads after forgetting, summary rebuilding, and reconnect tombstones. [Raw output](evidence/recording-demo.txt).
+- The full 20,000-item backfill: **0.30 s live recall p95**, **123.7 s convergence** after sending stopped, zero rate-limit errors, and a successful reference-model comparison. [Raw output](evidence/recording-backfill-20000.txt).
+- Four real application-container SIGKILL/restarts, followed by a successful reference-model comparison. [Raw output](evidence/recording-crash.txt).
+- All three statistics levels, with analytic-CDF substitution and independent bisection checks. [Raw output](evidence/recording-statistics.txt).
+
+The video also covers the current tradeoffs and what would change at 100× the data. [Chapter timestamps](video-chapters.txt).
+
 The hidden test suite was not available. No hidden-test pass is claimed.

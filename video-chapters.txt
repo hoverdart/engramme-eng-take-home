@@ -1,0 +1,7 @@
+00:00 Introduction
+00:12 Design
+01:53 Remembering and forgetting
+03:35 Live traffic during backfill
+04:23 Crash recovery
+04:53 Statistics
+06:58 Tradeoffs and scaling to 100×

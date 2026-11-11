@@ -5,3 +5,5 @@ data/
 .DS_Store
 *.sqlite3*
 *.log
+/Engramme-demo*.mp4
+/engramme-submission*.zip

@@ -1,0 +1,6 @@
+n=100: baseline=1399.820519504 ms; duplicates=1399.686400855 ms; improvement=0.134118650 ms
+n=10000: baseline=1399.998204739 ms; duplicates=1399.996858343 ms; improvement=0.001346396 ms
+Duplicated / all originals: 57.142857143%
+Duplicate wins / all originals: 9.183673469%
+Duplicate wins / duplicated originals: 16.071428571%
+Analytic-CDF and independent bisection checks passed.

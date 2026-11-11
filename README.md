@@ -1,6 +1,8 @@
 # Engramme memory service
 
-**Demo video: pending.**
+**Demo video:** [Download the MP4](https://github.com/hoverdart/engramme-eng-take-home/releases/download/submission-2026-11-11/Engramme-demo.mp4) · [Chapters](video-chapters.txt)
+
+The video is hosted in this private repository and requires repository access. The submission ZIP also includes the same MP4 at `video/Engramme-demo.mp4` for offline viewing.
 
 A local Python service backed by SQLite, with durable ingestion, cross-source deduplication, lineage, incremental summaries, and immediate clean reads after forgetting. Part 2 is in [STATISTICS.md](STATISTICS.md); its calculations are reproducible with `python3 calculate_statistics.py`.
 
@@ -116,4 +118,4 @@ Run these load checks sequentially, with no other active harness: they share the
 
 At 100× the data, partition ownership by user, use a transactional database/outbox with explicit worker leases and a shared concurrency budget, move to per-user vector indexes, and fetch lineage only for selected results. Large disconnects would use a durable source-generation visibility fence so reads become clean immediately while edge cleanup proceeds in batches. Add queue-age/error metrics, admission control, migrations, and a recovery runbook before operating that system.
 
-AI assistance: this implementation, supporting documentation, demo tooling, and statistics work were prepared with OpenAI Codex assistance.
+AI assistance: this implementation, supporting documentation, demo tooling, video assembly, and statistics work were prepared with OpenAI Codex assistance. The video uses the candidate's own recorded narration.
