@@ -45,9 +45,4 @@ The fixture contains **200,000 live items, 200,000 atomic memories and support e
 
 This is a **storage-loaded benchmark**, not a 200,000-event end-to-end replay or a long-duration soak test. Its percentile is nearest-rank over measured requests. It checks final row counts; full text/lineage correctness is checked separately by the public reference-model scenarios and regression tests. The benchmark uses native host Python with the sidecar in Docker; public and 20,000-item tests run the application itself in Docker. Results characterize this machine and workload, not every hidden distribution or hardware configuration.
 
-## Not done automatically
-
-- No hidden tests were available.
-- No recording, video upload, recruiting-portal submission, or reviewer invitations were performed.
-- The video link at the top of README must be replaced after recording.
-- Reviewer identities/access must be confirmed before sharing the private repository.
+The hidden test suite was not available. No hidden-test pass is claimed.

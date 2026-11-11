@@ -1,6 +1,6 @@
 # Engramme memory service
 
-**Demo video: not recorded yet. Replace this line with the unlisted screen-recording link before submission.**
+**Demo video: pending.**
 
 A local Python service backed by SQLite, with durable ingestion, cross-source deduplication, lineage, incremental summaries, and immediate clean reads after forgetting. Part 2 is in [STATISTICS.md](STATISTICS.md); its calculations are reproducible with `python3 calculate_statistics.py`.
 
@@ -116,11 +116,4 @@ Run these load checks sequentially, with no other active harness: they share the
 
 At 100× the data, partition ownership by user, use a transactional database/outbox with explicit worker leases and a shared concurrency budget, move to per-user vector indexes, and fetch lineage only for selected results. Large disconnects would use a durable source-generation visibility fence so reads become clean immediately while edge cleanup proceeds in batches. Add queue-age/error metrics, admission control, migrations, and a recovery runbook before operating that system.
 
-## Submission checklist
-
-- Review the implementation and [STATISTICS.md](STATISTICS.md), and rerun the documented checks.
-- Record one screen video with your voice explaining the design, live scenarios, failure recovery, and all statistics levels. Put its unlisted link at the top of this README.
-- Put the complete project in a **private** GitHub repository and give the specified reviewers access.
-- Submit the requested repository/video information through the recruiting workflow.
-
-AI assistance: this implementation, supporting documentation, demo tooling, and statistics work were prepared with OpenAI Codex assistance. The candidate should review the work and be ready to explain its choices and limitations.
+AI assistance: this implementation, supporting documentation, demo tooling, and statistics work were prepared with OpenAI Codex assistance.
